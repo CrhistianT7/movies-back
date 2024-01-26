@@ -24,6 +24,7 @@ func (app *application) routes() http.Handler {
 
 	v1router := chi.NewRouter()
 	v1router.Get("/", app.Home)
+	v1router.Get("/movies", app.AllMovies)
 
 	router.Mount("/v1", v1router)
 
