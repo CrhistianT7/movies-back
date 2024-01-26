@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -15,6 +14,7 @@ type application struct {
 
 func main() {
 	// set application config
+
 	godotenv.Load(".env")
 
 	port := os.Getenv("PORT")
@@ -23,6 +23,7 @@ func main() {
 	}
 
 	var app application
+
 	// read from command line
 
 	// connect to database
@@ -30,7 +31,12 @@ func main() {
 	log.Println("Starting server on port:", port)
 
 	// start a live server
-	err := http.ListenAndServe(fmt.Sprintf(":%v", port), nil)
+	server := &http.Server{
+		Handler: app.routes(),
+		Addr:    ":" + port,
+	}
+
+	err := server.ListenAndServe()
 	if err != nil {
 		log.Fatal("Something when wrong when starting the server:", err)
 	}
