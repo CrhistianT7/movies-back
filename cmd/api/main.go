@@ -27,10 +27,11 @@ func main() {
 
 	// connect to database
 	app.Domain = "example.com"
-	log.Println("Starting application on port:", port)
+	log.Println("Starting server on port:", port)
+
 	// start a live server
 	err := http.ListenAndServe(fmt.Sprintf(":%v", port), nil)
 	if err != nil {
-		log.Fatal("Something when wrong starting the server:", err)
+		log.Fatal("Something when wrong when starting the server:", err)
 	}
 }
