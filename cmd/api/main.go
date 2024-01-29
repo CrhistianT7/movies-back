@@ -1,19 +1,20 @@
 package main
 
 import (
-	"database/sql"
 	"flag"
 	"log"
 	"net/http"
 	"os"
 
+	"github.com/crhistiant7/movies-back/internal/repository"
+	"github.com/crhistiant7/movies-back/internal/repository/dbrepo"
 	"github.com/joho/godotenv"
 )
 
 type application struct {
 	Domain string
 	DSN    string
-	DB     *sql.DB
+	DB     repository.DatabaseRepo
 }
 
 func main() {
@@ -37,9 +38,11 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	app.DB = conn
+	app.DB = &dbrepo.PostgresDBRepo{DB: conn}
+	defer app.DB.Connection().Close()
 
 	app.Domain = "example.com"
+
 	log.Println("Starting server on port:", port)
 
 	// start a live server
